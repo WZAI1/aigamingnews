@@ -113,6 +113,9 @@ def fetch_and_process_articles(
         articles_data = [extract_article_data(article) for article in articles]
         df = pd.DataFrame(articles_data)
         
+        # Remove duplicate articles based on title
+        df = df.drop_duplicates(subset=['Title'], keep='first')
+        
         # Clean HTML content
         df['Summary'] = df['Summary'].apply(clean_html_content)
         df['Content'] = df['Content'].apply(clean_html_content)

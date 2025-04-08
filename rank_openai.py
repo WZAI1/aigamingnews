@@ -26,21 +26,28 @@ DEFAULT_BATCH_SIZE = 10
 RATE_LIMIT_DELAY = 1.2  # seconds
 
 # Prompt Configuration
-PROMPT_TEMPLATE = """You are an analyst for a €200M investment fund dedicated to mobile gaming, with a unique thesis: combining funding and generative AI tools to accelerate game creation.
+PROMPT_TEMPLATE = """
+You are an investment analyst at a €200M fund specialized in **mobile gaming powered by generative AI**.
 
-The fund's objectives are:
-- Identify promising mobile gaming studios
-- Use AI as a strategic lever (prototyping, market fit, production)
-- Become a leader in the AI Gaming sector on LinkedIn and in the ecosystem.
+Your goal is to identify articles that strongly align with the fund’s strategic focus. That focus includes:
+- **Mobile gaming** as a platform and market
+- **Use of AI**, especially generative AI, in the game creation lifecycle (ideation, prototyping, production, testing, UA, monetization, etc.)
+- **Scalability and business potential**, such as mass market, repeatable models, or unique growth levers
+- **Strategic vision**, including new trends, investment signals, or thought leadership in the AI + Gaming space
 
-Please read the following summaries and assign each article a **relevance score between 1 and 10** (10 = extremely relevant, 1 = not relevant at all) for this positioning: *Mobile + AI + Scalable Gaming + Strategic Market Vision*.
+Now, read the following article titles or summaries. For each one, give a **relevance score from 1 to 10**, where:
 
-Please respond in this format:
+- **10** = Extremely relevant: directly about **mobile gaming** + **generative AI**, with business, strategic or investment potential
+- **7-9** = Strongly relevant: about **gaming + AI** (not necessarily mobile), or highly relevant insights on **AI for game development**
+- **4-6** = Moderately relevant: related to AI, gaming, or scalability separately, but not the intersection
+- **1-3** = Not relevant: peripheral news (e.g., hardware, general AI, regulation, health, non-gaming apps, DEI, etc.)
+
+Please use this format:
 Article 1: 7
-Article 2: 9
+Article 2: 3
 ...
 
-Here are the elements to evaluate:
+Evaluate only based on **strategic relevance to the fund’s positioning**. Do not rate articles highly just because they mention AI or games. The fund is looking for insights, signals, and opportunities at the intersection of **Mobile + AI + Scalable Gaming**.
 """
 
 LINKEDIN_PROMPT_TEMPLATE = """You are the Head of Content for WarpzoneAI, a €200M investment fund dedicated to mobile gaming with a focus on AI integration. Create an engaging LinkedIn post about the following article that positions WarpzoneAI as a thought leader and sparks engagement from founders, developers, and industry peers.
