@@ -312,7 +312,7 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
             
-            trending_articles = df[df['GPT_Pertinence'] > 7].iloc[5:]  # Get articles scored > 7, excluding top 5
+            trending_articles = df[df['GPT_Pertinence'] >= 7].iloc[5:]  # Get articles scored > 7, excluding top 5
             
             if len(trending_articles) == 0:
                 st.info("No trending articles found at the moment.")

@@ -27,28 +27,44 @@ RATE_LIMIT_DELAY = 1.2  # seconds
 
 # Prompt Configuration
 PROMPT_TEMPLATE = """
-You are an investment analyst at a €200M fund specialized in **mobile gaming powered by generative AI**.
+You help a €200M AI Gaming fund stay current with news to share on LinkedIn. Your job is to score news articles from 1 to 10, based on how useful they are to:
 
-Your goal is to identify articles that strongly align with the fund’s strategic focus. That focus includes:
-- **Mobile gaming** as a platform and market
-- **Use of AI**, especially generative AI, in the game creation lifecycle (ideation, prototyping, production, testing, UA, monetization, etc.)
-- **Scalability and business potential**, such as mass market, repeatable models, or unique growth levers
-- **Strategic vision**, including new trends, investment signals, or thought leadership in the AI + Gaming space
+- Share insights and stand out as a thought leader in AI-powered gaming
+- Spark smart conversations around AI x Gaming (tools, use cases, market trends)
+- Discover real-world experiments, prototypes, startups, or bold visions in this space
 
-Now, read the following article titles or summaries. For each one, give a **relevance score from 1 to 10**, where:
+🎯 What you’re looking for:
+✅ AI used in game creation: agents, generation, design, monetization, etc.
+✅ Game prototypes, demos, or releases powered by AI
+✅ Studios or startups combining AI and gaming
+✅ Funding, strategic partnerships, market expansion in AI Gaming
+✅ Strategic thinking about AI agent usage, generative workflows, toolchains (even outside gaming) IF it helps fuel smart reflections on gaming
 
-- **10** = Extremely relevant: directly about **mobile gaming** + **generative AI**, with business, strategic or investment potential
-- **7-9** = Strongly relevant: about **gaming + AI** (not necessarily mobile), or highly relevant insights on **AI for game development**
-- **4-6** = Moderately relevant: related to AI, gaming, or scalability separately, but not the intersection
-- **1-3** = Not relevant: peripheral news (e.g., hardware, general AI, regulation, health, non-gaming apps, DEI, etc.)
+🚫 What to avoid or downrate:
+❌ Generic AI infra news: GPUs, rendering, blockchain — unless directly tied to gaming
+❌ Buzz around AI execs, labs or funding without gaming context
+❌ Events, regulatory news, or vague partnerships with no actionable insight
 
-Please use this format:
-Article 1: 7
-Article 2: 3
+⚖️ Subtleties to keep in mind:
+- A startup recreating a classic game with AI (e.g., Quake II) = **10**
+- An article on AI agents that helps think critically about their use = **8–10**, even if not gaming-specific
+- Infrastructure articles (e.g., Render Network) = **≤6** if not gaming-related
+- Famous AI founders with new projects = **≤4** if no connection to games
+
+Use this scale:
+- **10** = Must-share: bold vision, real demo, startup, or strong strategic insight for AI Gaming
+- **7–9** = Strong signal: game-focused AI news, relevant tool or thought piece
+- **4–6** = Peripheral: tech-related but not useful to post
+- **1–3** = Not relevant: general AI, HR, crypto, regulation…
+
+Format:
+Article 1: 6
+Article 2: 10
 ...
 
-Evaluate only based on **strategic relevance to the fund’s positioning**. Do not rate articles highly just because they mention AI or games. The fund is looking for insights, signals, and opportunities at the intersection of **Mobile + AI + Scalable Gaming**.
+Rate based on: *Would this be a smart, original thing to post or comment on as an AI Gaming expert on LinkedIn?*
 """
+
 
 LINKEDIN_PROMPT_TEMPLATE = """You are the Head of Content for WarpzoneAI, a €200M investment fund dedicated to mobile gaming with a focus on AI integration. Create an engaging LinkedIn post about the following article that positions WarpzoneAI as a thought leader and sparks engagement from founders, developers, and industry peers.
 
