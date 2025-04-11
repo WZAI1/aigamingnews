@@ -27,51 +27,52 @@ RATE_LIMIT_DELAY = 1.2  # seconds
 
 # Prompt Configuration
 PROMPT_TEMPLATE = PROMPT_TEMPLATE = """
-You are helping a €200M AI Gaming fund identify the most relevant news to share on LinkedIn to build credibility and stay ahead of the curve.
+You are curating news for the founder of a €200M AI Gaming fund to help him build thought leadership on LinkedIn.
 
-You will receive article summaries. Please assign a **relevance score from 1 to 10** to each article, based on these rules:
-
----
-
-🎯 Scoring Criteria:
-
-1. **AI is required to score well.**
-   - Articles not related to AI should be rated very low (1–3), even if they discuss gaming (e.g. Web3 gaming, console news, esports).
-
-2. **AI + Gaming = top priority.**
-   - Articles about how AI is applied to game creation, design, monetization, content generation, or studio tools should score highest.
-
-3. **AI Agents get a strong bonus.**
-   - Articles about **technical advances, protocols, frameworks or strategies** for AI agents — even **outside of gaming** — can score **very high (8–10)**.
-   - Articles offering **general commentary or business applications** of agents should be scored lower (6–7), unless they are highly insightful.
-
-4. **Generic AI content.**
-   - AI-related news without gaming or agent focus (e.g. LLMs, cloud AI infra, healthcare AI) can score moderately (4–6) if relevant.
+You will receive article summaries and must assign a **relevance score from 1 to 10**, using the following framework:
 
 ---
 
-⚠️ Key clarification:
-- Do **not** score “gaming-only” articles (without any mention of AI) higher than 3.
-- Do **score highly** any **agent-related breakthrough, protocol or framework**, even outside games, if it has potential ecosystem impact.
+🎯 Prioritization Criteria
+
+1. **AI is mandatory to score well.**
+   - Articles unrelated to AI should get low scores (1–3), even if they talk about gaming or crypto.
+
+2. **AI + Gaming = highest priority.**
+   - Prioritize articles where AI is applied to game design, prototyping, monetization, player behavior, studio tools, etc.
+
+3. **AI Agents = strong bonus.**
+   - Articles about **AI agents**, agent frameworks, or agent interoperability (even outside gaming) should score **high (8–10)** if they are **strategic or technical in depth**.
+   - Business applications or general commentary on agents = **6–7**.
+
+4. **Crypto + AI = moderate.**
+   - AI applied to crypto (e.g. trading agents, decentralized agent platforms) should score **no higher than 7–8**, unless there is a clear gaming or agentic innovation.
+
+5. **Product/tech announcements = evaluate for depth.**
+   - If it's mostly **marketing** (e.g. chipset release, performance claims, vague AI enablement) → score low (4–6).
+   - If the announcement includes **real architectural insights, code, demo, or benchmark** → can score higher (7–9).
+
+6. **Don’t miss foundational breakthroughs.**
+   - Some technical or open protocol announcements (e.g. Google’s Agent2Agent) may deserve a **10** even if they are outside gaming — if they reshape the AI or agentic landscape.
 
 ---
 
 🧠 Scoring Scale:
 
-- **10** = AI + Gaming + strategic insight OR major agentic breakthrough (e.g. frameworks, interop standards, major models)
-- **8–9** = AI + Gaming (standard news), or very strong AI agent articles
-- **6–7** = Moderate insight (e.g. agents applied to business), or deep AI news
-- **4–5** = General AI news (infra, tools, etc.) without clear application
-- **1–3** = Not AI-related (even if gaming)
+- **10** = AI + Gaming + strong insight OR foundational agentic breakthrough
+- **8–9** = AI + Gaming (even if not deep) OR strong agent or use-case news
+- **6–7** = Agent-related business content, insightful AI outside gaming, or crypto/infra AI with some relevance
+- **4–5** = Generic AI product news, performance claims, buzz with little depth
+- **1–3** = Not AI-related or pure marketing without relevance
 
 ---
 
 💬 Format:
 Article 1: 7  
-Article 2: 10  
+Article 2: 3  
 ...
 
-Ask yourself: *Would this article help the fund founder post smart, strategic content on LinkedIn — especially around AI Gaming or AI Agents shaping the future of interactivity?*
+Use this lens: *Would this help the fund founder sound like a forward-thinking expert in AI Gaming and agent-based technology on LinkedIn?*
 """
 
 
