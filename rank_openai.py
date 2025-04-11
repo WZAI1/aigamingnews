@@ -26,43 +26,52 @@ DEFAULT_BATCH_SIZE = 10
 RATE_LIMIT_DELAY = 1.2  # seconds
 
 # Prompt Configuration
-PROMPT_TEMPLATE = """
-You help a €200M AI Gaming fund stay current with news to share on LinkedIn. Your job is to score news articles from 1 to 10, based on how useful they are to:
+PROMPT_TEMPLATE = PROMPT_TEMPLATE = """
+You are helping a €200M AI Gaming fund identify the most relevant news to share on LinkedIn to build credibility and stay ahead of the curve.
 
-- Share insights and stand out as a thought leader in AI-powered gaming
-- Spark smart conversations around AI x Gaming (tools, use cases, market trends)
-- Discover real-world experiments, prototypes, startups, or bold visions in this space
+You will receive article summaries. Please assign a **relevance score from 1 to 10** to each article, based on these rules:
 
-🎯 What you’re looking for:
-✅ AI used in game creation: agents, generation, design, monetization, etc.
-✅ Game prototypes, demos, or releases powered by AI
-✅ Studios or startups combining AI and gaming
-✅ Funding, strategic partnerships, market expansion in AI Gaming
-✅ Strategic thinking about AI agent usage, generative workflows, toolchains (even outside gaming) IF it helps fuel smart reflections on gaming
+---
 
-🚫 What to avoid or downrate:
-❌ Generic AI infra news: GPUs, rendering, blockchain — unless directly tied to gaming
-❌ Buzz around AI execs, labs or funding without gaming context
-❌ Events, regulatory news, or vague partnerships with no actionable insight
+🎯 Scoring Criteria:
 
-⚖️ Subtleties to keep in mind:
-- A startup recreating a classic game with AI (e.g., Quake II) = **10**
-- An article on AI agents that helps think critically about their use = **8–10**, even if not gaming-specific
-- Infrastructure articles (e.g., Render Network) = **≤6** if not gaming-related
-- Famous AI founders with new projects = **≤4** if no connection to games
+1. **AI is required to score well.**
+   - Articles not related to AI should be rated very low (1–3), even if they discuss gaming (e.g. Web3 gaming, console news, esports).
 
-Use this scale:
-- **10** = Must-share: bold vision, real demo, startup, or strong strategic insight for AI Gaming
-- **7–9** = Strong signal: game-focused AI news, relevant tool or thought piece
-- **4–6** = Peripheral: tech-related but not useful to post
-- **1–3** = Not relevant: general AI, HR, crypto, regulation…
+2. **AI + Gaming = top priority.**
+   - Articles about how AI is applied to game creation, design, monetization, content generation, or studio tools should score highest.
 
-Format:
-Article 1: 6
-Article 2: 10
+3. **AI Agents get a strong bonus.**
+   - Articles about **technical advances, protocols, frameworks or strategies** for AI agents — even **outside of gaming** — can score **very high (8–10)**.
+   - Articles offering **general commentary or business applications** of agents should be scored lower (6–7), unless they are highly insightful.
+
+4. **Generic AI content.**
+   - AI-related news without gaming or agent focus (e.g. LLMs, cloud AI infra, healthcare AI) can score moderately (4–6) if relevant.
+
+---
+
+⚠️ Key clarification:
+- Do **not** score “gaming-only” articles (without any mention of AI) higher than 3.
+- Do **score highly** any **agent-related breakthrough, protocol or framework**, even outside games, if it has potential ecosystem impact.
+
+---
+
+🧠 Scoring Scale:
+
+- **10** = AI + Gaming + strategic insight OR major agentic breakthrough (e.g. frameworks, interop standards, major models)
+- **8–9** = AI + Gaming (standard news), or very strong AI agent articles
+- **6–7** = Moderate insight (e.g. agents applied to business), or deep AI news
+- **4–5** = General AI news (infra, tools, etc.) without clear application
+- **1–3** = Not AI-related (even if gaming)
+
+---
+
+💬 Format:
+Article 1: 7  
+Article 2: 10  
 ...
 
-Rate based on: *Would this be a smart, original thing to post or comment on as an AI Gaming expert on LinkedIn?*
+Ask yourself: *Would this article help the fund founder post smart, strategic content on LinkedIn — especially around AI Gaming or AI Agents shaping the future of interactivity?*
 """
 
 
