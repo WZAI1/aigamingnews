@@ -26,53 +26,65 @@ DEFAULT_BATCH_SIZE = 10
 RATE_LIMIT_DELAY = 1.2  # seconds
 
 # Prompt Configuration
-PROMPT_TEMPLATE = PROMPT_TEMPLATE = """
-You are curating news for the founder of a €200M AI Gaming fund to help him build thought leadership on LinkedIn.
+PROMPT_TEMPLATE = """
+You are curating daily tech news for the founder of a €200M AI Gaming fund to help him grow his thought leadership on LinkedIn.
 
-You will receive article summaries and must assign a **relevance score from 1 to 10**, using the following framework:
+For each article summary, assign a **relevance score from 1 to 10**, based on the following logic:
 
 ---
 
-🎯 Prioritization Criteria
+🎯 Relevance Rules
 
-1. **AI is mandatory to score well.**
-   - Articles unrelated to AI should get low scores (1–3), even if they talk about gaming or crypto.
+1. **AI is required to score well.**
+   - Articles that do not focus on AI should receive low scores (1–3), even if they talk about gaming, Web3, or hardware.
 
-2. **AI + Gaming = highest priority.**
-   - Prioritize articles where AI is applied to game design, prototyping, monetization, player behavior, studio tools, etc.
+2. **AI + Gaming = top priority.**
+   - Articles where AI is applied to games (design, prototyping, monetization, NPCs, tools, studios…) should get the highest scores (9–10).
 
 3. **AI Agents = strong bonus.**
-   - Articles about **AI agents**, agent frameworks, or agent interoperability (even outside gaming) should score **high (8–10)** if they are **strategic or technical in depth**.
-   - Business applications or general commentary on agents = **6–7**.
+   - Strategic or technical advances in AI agents — even outside of gaming — can score high (8–10).
+   - Commentary or business use of agents = 6–7.
 
-4. **Crypto + AI = moderate.**
-   - AI applied to crypto (e.g. trading agents, decentralized agent platforms) should score **no higher than 7–8**, unless there is a clear gaming or agentic innovation.
+4. **Generic AI without gaming or agents = capped at 6.**
+   - Infrastructure, LLMs, AI in healthcare, marketing, etc. should **not exceed 6**, even if well written.
+   - Use **6** for solid articles with limited direct relevance.
 
-5. **Product/tech announcements = evaluate for depth.**
-   - If it's mostly **marketing** (e.g. chipset release, performance claims, vague AI enablement) → score low (4–6).
-   - If the announcement includes **real architectural insights, code, demo, or benchmark** → can score higher (7–9).
+5. **Product / Tech announcements = evaluate for depth.**
+   - If mostly marketing (e.g. chip launch, vague AI claims) → score low (4–6).
+   - If showing real architecture, benchmarks, or demo → score higher (7–9).
 
-6. **Don’t miss foundational breakthroughs.**
-   - Some technical or open protocol announcements (e.g. Google’s Agent2Agent) may deserve a **10** even if they are outside gaming — if they reshape the AI or agentic landscape.
+6. **Web3 or Crypto = important but capped.**
+   - AI applied to Web3 (e.g. crypto agents, blockchain gaming) is relevant, but should **never exceed 8/10**.
+   - Apply a **–1 penalty** to strong articles that are mostly Web3-driven to keep them out of the top stories.
 
+7. **Highlight strategic breakthroughs.**
+   - Open protocols, game-changing frameworks (e.g. Google Agent2Agent) may deserve a 10, even outside gaming — if they shape the future of AI or agents.
+
+8. **Strategic reports or reflections = valuable.**
+   - Score **high (8–10)** if the article is:
+     - A major industry report (e.g. Stanford AI Index)
+     - A structured reflection on how AI impacts creation, ethics, design, or future interactions
+   - Score lower (4–7) if it’s more opinion-based or lacks original depth
 ---
 
 🧠 Scoring Scale:
 
-- **10** = AI + Gaming + strong insight OR foundational agentic breakthrough
-- **8–9** = AI + Gaming (even if not deep) OR strong agent or use-case news
-- **6–7** = Agent-related business content, insightful AI outside gaming, or crypto/infra AI with some relevance
-- **4–5** = Generic AI product news, performance claims, buzz with little depth
-- **1–3** = Not AI-related or pure marketing without relevance
+- **10** = AI + Gaming + strategic depth OR major agentic breakthrough
+- **8–9** = AI + Gaming (less deep) OR strong agent article OR insightful AI use case
+- **6–7** = Agent business news, AI in Web3, product with real depth
+- **4–5** = Generic AI product/infra news, limited insight
+- **1–3** = No real AI relevance (even if gaming, Web3, or flashy)
+
+🔒 **Web3 articles cannot score higher than 8**, regardless of content.
 
 ---
 
-💬 Format:
+💬 Output Format:
 Article 1: 7  
 Article 2: 3  
 ...
 
-Use this lens: *Would this help the fund founder sound like a forward-thinking expert in AI Gaming and agent-based technology on LinkedIn?*
+Ask yourself: *Would this make a strong LinkedIn post for someone leading a €200M AI Gaming fund, focusing on the future of AI in gaming and interactivity?*
 """
 
 
@@ -203,7 +215,8 @@ def generate_bullet_points_summary(title: str, content: str) -> str:
                 2. Focus on facts, numbers, and specific details
                 3. End with a clear explanation of why this matters to AI in gaming
                 4. Keep each bullet point concise but informative
-                5. Use the exact format shown above"""},
+                5. Each bullet point should be 300 to 500 characters long
+                6. Use the exact format shown above"""},
                 {"role": "user", "content": f"Title: {title}\n\nContent: {content}"}
             ],
             temperature=0.7,
