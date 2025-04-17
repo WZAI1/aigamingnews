@@ -126,7 +126,7 @@ def format_date(date_str):
     except:
         return date_str
 
-def display_article(article, show_linkedin_button=False):
+def display_article(article, show_linkedin_button=False, show_delete_button=False):
     """Display an article in a card format."""
     # Format bullet points with proper line breaks
     bullet_points = article.get('Bullet_Points', '')
@@ -145,19 +145,48 @@ def display_article(article, show_linkedin_button=False):
     # Generate unique key for this article's LinkedIn post
     article_key = f"linkedin_{article['URL']}"
 
-    st.markdown(f"""
-        <div class="article-card">
-            <div class="article-title">{article['Title']}</div>
-            <div class="article-meta">
-                Published: {format_date(article['Publication Date'])} | 
-                Score: <span class="article-score">{article['GPT_Pertinence']}/10</span>
-            </div>
-            <div class="article-bullets">
-                {bullet_points_html}
-            </div>
-            <a href="{article['URL']}" target="_blank">Read more →</a>
-        </div>
-    """, unsafe_allow_html=True)
+    # Create a container for the article card
+    article_container = st.container()
+    
+    with article_container:
+        # Add delete button if requested
+        if show_delete_button:
+            col1, col2 = st.columns([0.9, 0.1])
+            with col1:
+                st.markdown(f"""
+                    <div class="article-card">
+                        <div class="article-title">{article['Title']}</div>
+                        <div class="article-meta">
+                            Published: {format_date(article['Publication Date'])} | 
+                            Score: <span class="article-score">{article['GPT_Pertinence']}/10</span>
+                        </div>
+                        <div class="article-bullets">
+                            {bullet_points_html}
+                        </div>
+                        <a href="{article['URL']}" target="_blank">Read more →</a>
+                    </div>
+                """, unsafe_allow_html=True)
+            with col2:
+                if st.button("❌", key=f"delete_{article['URL']}"):
+                    # Add article to deleted articles in session state
+                    if 'deleted_articles' not in st.session_state:
+                        st.session_state.deleted_articles = set()
+                    st.session_state.deleted_articles.add(article['URL'])
+                    st.rerun()
+        else:
+            st.markdown(f"""
+                <div class="article-card">
+                    <div class="article-title">{article['Title']}</div>
+                    <div class="article-meta">
+                        Published: {format_date(article['Publication Date'])} | 
+                        Score: <span class="article-score">{article['GPT_Pertinence']}/10</span>
+                    </div>
+                    <div class="article-bullets">
+                        {bullet_points_html}
+                    </div>
+                    <a href="{article['URL']}" target="_blank">Read more →</a>
+                </div>
+            """, unsafe_allow_html=True)
 
     # Add LinkedIn post generation button if requested
     if show_linkedin_button:
@@ -204,6 +233,10 @@ def main():
         st.session_state.linkedin_posts = {}
     if 'days_to_fetch' not in st.session_state:
         st.session_state.days_to_fetch = DEFAULT_DAYS
+    if 'deleted_articles' not in st.session_state:
+        st.session_state.deleted_articles = set()
+    if 'moved_to_top' not in st.session_state:
+        st.session_state.moved_to_top = set()
 
     # Sidebar
     with st.sidebar:
@@ -296,11 +329,30 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
             
-            #top_articles = df.sort_values('GPT_Pertinence', ascending=False).head(5)  # Get top 5 articles
+            # Get top articles excluding deleted ones
             top_articles = df[df['GPT_Pertinence'] > 7].head(5)
+            top_articles = top_articles[~top_articles['URL'].isin(st.session_state.deleted_articles)]
+
+            # If we have deleted articles, try to replace them with trending articles
+            if len(top_articles) < 5:
+                # Get trending articles that are not in top stories and not deleted
+                trending_articles = df[df['GPT_Pertinence'] >= 7].iloc[5:]
+                trending_articles = trending_articles[~trending_articles['URL'].isin(st.session_state.deleted_articles)]
+                trending_articles = trending_articles[~trending_articles['URL'].isin(st.session_state.moved_to_top)]
+                
+                # Add trending articles to fill the gap
+                if len(trending_articles) > 0:
+                    num_to_add = min(5 - len(top_articles), len(trending_articles))
+                    additional_articles = trending_articles.head(num_to_add)
+                    
+                    # Add the moved articles to the moved_to_top set
+                    for _, article in additional_articles.iterrows():
+                        st.session_state.moved_to_top.add(article['URL'])
+                    
+                    top_articles = pd.concat([top_articles, additional_articles])
 
             for _, article in top_articles.iterrows():
-                display_article(article)
+                display_article(article, show_delete_button=True)
                 
         elif page == "📰 Trending Articles":
             st.subheader("Trending Articles")
@@ -312,7 +364,10 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
             
-            trending_articles = df[df['GPT_Pertinence'] >= 7].iloc[5:]  # Get articles scored > 7, excluding top 5
+            # Get trending articles excluding deleted ones, top stories, and moved articles
+            trending_articles = df[df['GPT_Pertinence'] >= 7].iloc[5:]
+            trending_articles = trending_articles[~trending_articles['URL'].isin(st.session_state.deleted_articles)]
+            trending_articles = trending_articles[~trending_articles['URL'].isin(st.session_state.moved_to_top)]
             
             if len(trending_articles) == 0:
                 st.info("No trending articles found at the moment.")
